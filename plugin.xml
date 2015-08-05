@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:rim="http://www.blackberry.com/ns/widgets"
+        id="org.patpat.cordova.empatica"
+        version="0.0.1">
+
+    <name>Empatica</name>
+    <description>Cordova plugin to wrap the Empatica SDK</description>
+    <author>Patrick Recher</author>
+
+    <info>Interface to the Empatica SDK now available at window.plugins.Empatica</info>
+
+    <js-module src="www/cordova_plugin_empatica.js" name="Empatica">
+        <clobbers target="window.plugins.Empatica" />
+    </js-module>
+
+    <engines>
+        <engine name="cordova" version=">=3.1.0" />
+    </engines>
+
+    <platform name="ios">
+
+        <!-- config file -->
+        <config-file target="config.xml" parent="/*">
+            <feature name="Empatica">
+                <param name="ios-package" value="Empatica" />
+            </feature>
+        </config-file>
+
+
+        <header-file src="src/ios/Empatica.h" />
+        <source-file src="src/ios/Empatica.m" />
+
+        <framework src="ExternalAccessory.framework" />
+        <framework src="libz.dylib" />
+        <framework src="CoreBluetooth.framework" />
+        <framework src="CoreMotion.framework" />
+        <framework src="CFNetwork.framework" />
+        <framework src="MessageUI.framework" />
+
+        <framework src="src/ios/EmpaLink-ios-0.7-full.framework" custom="true"/>
+
+    </platform>
+
+</plugin>
