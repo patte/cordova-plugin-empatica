@@ -38,6 +38,7 @@
         <framework src="CoreMotion.framework" />
         <framework src="CFNetwork.framework" />
         <framework src="MessageUI.framework" />
+        <framework src="Security.framework" />
 
         <framework src="src/ios/EmpaLink-ios-0.7-full.framework" custom="true"/>
 
