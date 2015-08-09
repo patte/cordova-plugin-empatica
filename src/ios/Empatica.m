@@ -21,6 +21,7 @@
     self.connectNumDevices = 0;
     self.isRecording = false;
   }
+  return self;
 }
 
 
