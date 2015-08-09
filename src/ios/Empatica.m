@@ -71,7 +71,7 @@
 }
 
 -(void)connectDevices:(CDVInvokedUrlCommand *)command {
-  self.connectCallbackId = command.callbackId;
+  self.connectionCallbackId = command.callbackId;
   if(!self.isAuthenticated) {
     NSMutableDictionary* returnInfo = [NSMutableDictionary dictionaryWithCapacity:2];
     [returnInfo setObject:@"API not authenticated!" forKey:@"message"];
@@ -91,7 +91,7 @@
     return;
   }
   NSArray *deviceNames = [command.arguments objectAtIndex:0];
-  self.connectNumDevices = deviceNames.length;
+  self.connectNumDevices = deviceNames.count;
   for (EmpaticaDeviceManager *deviceName in deviceNames) {
     EmpaticaDeviceManager *device = [_discoveredDevices objectForKey:deviceName];
     if(device != nil) {
@@ -101,7 +101,7 @@
 }
 
 -(BOOL)allDevicesConnected {
-  return (self.connectNumDevices == _connectedDevices.length);
+  return (self.connectNumDevices == _connectedDevices.count);
 }
 
 -(void)disconnectAllDevices:(CDVInvokedUrlCommand *)command {
@@ -152,7 +152,7 @@
 #pragma mark empatica signaling delegate methods
 - (void)didUpdateBLEStatus:(BLEStatus)status {
   switch (status) {
-    case kBLEStatusNotAvailable:
+    case kBLEStatusNotAvailable: {
       NSLog(@"Bluetooth low energy not available");
       NSMutableDictionary* returnInfo = [NSMutableDictionary dictionaryWithCapacity:2];
       [returnInfo setObject:@"Bluetooth not available!" forKey:@"message"];
@@ -162,15 +162,15 @@
       [result setKeepCallbackAsBool:YES];
       [self.commandDelegate sendPluginResult:result callbackId:self.discoverCallbackId];
       [self disconnectAllDevices:nil];
-    break;
-    case kBLEStatusReady:
+      } break;
+    case kBLEStatusReady: {
       NSLog(@"Bluetooth low energy ready");
-    break;
-    case kBLEStatusScanning:
+      } break;
+    case kBLEStatusScanning: {
       NSLog(@"Bluetooth low energy scanning for devices");
-    break;
+      } break;
     default:
-    break;
+      break;
   }
 }
 
@@ -245,7 +245,7 @@
 
 #pragma mark empatica data delegate methods
 - (void)didReceiveBVP:(float)bvp withTimestamp:(double)timestamp fromDevice:(EmpaticaDeviceManager *)device {
-  if(isRecording) {
+  if(self.isRecording) {
     NSLog(@"BVP: %.2f", bvp);
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestamp];
     NSString *dateString = [_dateFormatter stringFromDate:date];
