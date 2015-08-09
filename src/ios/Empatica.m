@@ -6,14 +6,6 @@
 @synthesize connectionCallbackId;
 @synthesize recordingCallbackId;
 
--(void)dealloc {
-  [_dateFormatter release];
-  _dateFormatter = nil;
-  [_connectedDevices release];
-  _connectedDevices = nil;
-  [super dealloc];
-}
-
 -(id)init {
   self = [super init];
   if(self) {
