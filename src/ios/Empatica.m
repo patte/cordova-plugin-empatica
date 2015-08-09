@@ -107,13 +107,9 @@
     NSLog(@"ignoring discoverDevices while isRecording!");
     return;
   }
-  if([self allDevicesConnected]) {
-    NSLog(@"ignoring connectDevices, all devices are already connected!");
-    return;
-  }
   NSArray *deviceNames = [command.arguments objectAtIndex:0];
-  self.connectNumDevices = deviceNames.count;
-  for (EmpaticaDeviceManager *deviceName in deviceNames) {
+  self.connectNumDevices = (int)deviceNames.count;
+  for (NSString *deviceName in deviceNames) {
     EmpaticaDeviceManager *device = [_discoveredDevices objectForKey:deviceName];
     if(device != nil) {
       [device connectWithDeviceDelegate:self];
@@ -199,16 +195,17 @@
   if (devices.count > 0) {
     for (EmpaticaDeviceManager *device in devices) {
       NSLog(@"Discovered device: %@", device.name);
-      [_discoveredDevices setObject:device forKey:device.name];
+      if([_discoveredDevices objectForKey:device.name]==nil) {
+        [_discoveredDevices setObject:device forKey:device.name];
+      }
     }
   } else {
     NSLog(@"No device found in range.");
   }
   NSMutableArray* discoveredDevices = [[NSMutableArray alloc] init];
-  for (EmpaticaDeviceManager *device in _discoveredDevices) {
-    if([discoveredDevices indexOfObject:device.name]==NSNotFound) {
-      [discoveredDevices addObject:device.name];
-    }
+  for (NSString* deviceName in _discoveredDevices) {
+    //EmpaticaDeviceManager *device = [_discoveredDevices objectForKey:deviceName];
+    [discoveredDevices addObject:deviceName];
   } 
   CDVPluginResult* result = nil;
   result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:discoveredDevices];
