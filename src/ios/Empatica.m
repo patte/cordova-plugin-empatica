@@ -6,24 +6,44 @@
 @synthesize connectionCallbackId;
 @synthesize recordingCallbackId;
 
--(id)init {
-  self = [super init];
-  if(self) {
-    _dateFormatter = [[NSDateFormatter alloc] init];
-    NSLocale *enUSPOSIXLocale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
-    [_dateFormatter setLocale:enUSPOSIXLocale];
-    [_dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZZZZ"];
-
-    _discoveredDevices = [[NSMutableDictionary alloc] init];
-    _connectedDevices = [[NSMutableDictionary alloc] init];
-
-    self.isAuthenticated = false;
-    self.connectNumDevices = 0;
-    self.isRecording = false;
-  }
-  return self;
+-(void)pluginInitialize {
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground)
+                                               name:UIApplicationDidEnterBackgroundNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive)
+                                               name:UIApplicationDidBecomeActiveNotification object:nil];
+  _dateFormatter = [[NSDateFormatter alloc] init];
+  NSLocale *enUSPOSIXLocale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
+  [_dateFormatter setLocale:enUSPOSIXLocale];
+  [_dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZZZZ"];
+  
+  _discoveredDevices = [NSMutableDictionary dictionary];
+  _connectedDevices = [NSMutableDictionary dictionary];
+  
+  self.isAuthenticated = false;
+  self.connectNumDevices = 0;
+  self.isRecording = false;
 }
 
+/* unfortunately listening to background notifications and
+   inform the empatica api does not work (empatica API 0.7.2).
+   Because we are obligated to implement it in the AppDelegate,
+   you need to manually add the following lines to the
+   generated project's AppDelegate
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    [EmpaticaAPI prepareForBackground];
+}
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    [EmpaticaAPI prepareForResume];
+}
+-(void)applicationDidEnterBackground {
+  [EmpaticaAPI prepareForBackground];
+}
+-(void)applicationDidBecomeActive {
+  [EmpaticaAPI prepareForResume];
+}
+*/
+
+#pragma mark our cordova api
 
 -(void)authenticateWithAPIKey:(CDVInvokedUrlCommand *)command {
   if(self.isAuthenticated) {
