@@ -1,7 +1,6 @@
 var Empatica = {
 
     authenticateWithAPIKey: function(key, success, failure) {
-
         cordova.exec(
             success,
             failure,
@@ -9,17 +8,35 @@ var Empatica = {
             'authenticateWithAPIKey',
             [ key ]
         );
-
     },
 
-    connectFirstDevice: function(connected, disconnected) {
-
+    discoverDevices: function(success, failure) {
         cordova.exec(
-            connected,
-            disconnected,
+            success,
+            failure,
             'Empatica',
-            'connectFirstDevice',
-            []
+            'discoverDevices',
+            [ ]
+        );
+    },
+
+    connectDevices: function(deviceNames, success, failure) {
+        cordova.exec(
+            success,
+            failure,
+            'Empatica',
+            'connectDevices',
+            [ deviceNames ]
+        );
+    },
+
+    startRecording: function(sessionId, success, failure) {
+        cordova.exec(
+            success,
+            failure,
+            'Empatica',
+            'startRecording',
+            [ sessionId ]
         );
     }
 
