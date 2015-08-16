@@ -48,6 +48,16 @@ var Empatica = {
             'startRecording',
             [ sessionId ]
         );
+    },
+
+    stopRecording: function(success, failure) {
+        cordova.exec(
+            success,
+            failure,
+            'Empatica',
+            'stopRecording',
+            [ ]
+        );
     }
 
 };

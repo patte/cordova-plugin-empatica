@@ -166,6 +166,11 @@
   self.isRecording = true;
 }
 
+-(void)stopRecording:(CDVInvokedUrlCommand *)command {
+  //TODO beep!
+  self.isRecording = false;
+}
+
 #pragma mark empatica signaling delegate methods
 - (void)didUpdateBLEStatus:(BLEStatus)status {
   switch (status) {
