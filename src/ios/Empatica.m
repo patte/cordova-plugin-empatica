@@ -265,21 +265,55 @@
 - (void)didReceiveBVP:(float)bvp withTimestamp:(double)timestamp fromDevice:(EmpaticaDeviceManager *)device {
   if(self.isRecording) {
     NSLog(@"BVP: %.2f", bvp);
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestamp];
-    NSString *dateString = [_dateFormatter stringFromDate:date];
+    NSString* filename = [NSString stringWithFormat:@"%@_%@_BVP.csv", self.sessionId, device.name];
+    [self saveFloat:bvp withTimestamp:timestamp toFilename:filename];
   }
 }
 - (void)didReceiveGSR:(float)gsr withTimestamp:(double)timestamp fromDevice:(EmpaticaDeviceManager *)device {
+  if(self.isRecording) {
+    NSLog(@"GSR: %.2f", gsr);
+    NSString* filename = [NSString stringWithFormat:@"%@_%@_GSR.csv", self.sessionId, device.name];
+    [self saveFloat:gsr withTimestamp:timestamp toFilename:filename];
+  }
 }
 - (void)didReceiveIBI:(float)ibi withTimestamp:(double)timestamp fromDevice:(EmpaticaDeviceManager *)device {
+  if(self.isRecording) {
+    NSLog(@"IBI: %.2f", ibi);
+    NSString* filename = [NSString stringWithFormat:@"%@_%@_IBI.csv", self.sessionId, device.name];
+    [self saveFloat:ibi withTimestamp:timestamp toFilename:filename];
+  }
 }
 - (void)didReceiveAccelerationX:(char)x y:(char)y z:(char)z withTimestamp:(double)timestamp fromDevice:(EmpaticaDeviceManager *)device {
 }
 - (void)didReceiveTemperature:(float)temp withTimestamp:(double)timestamp fromDevice:(EmpaticaDeviceManager *)device {
+  if(self.isRecording) {
+    NSLog(@"Temp: %.2f", temp);
+    NSString* filename = [NSString stringWithFormat:@"%@_%@_TEMP.csv", self.sessionId, device.name];
+    [self saveFloat:temp withTimestamp:timestamp toFilename:filename];
+  }
 }
 -(void)didReceiveTagAtTimestamp:(double)timestamp fromDevice:(EmpaticaDeviceManager *)device {
+  if(self.isRecording) {
+    NSString* filename = [NSString stringWithFormat:@"%@_%@_TAG.csv", self.sessionId, device.name];
+    [self saveFloat:1 withTimestamp:timestamp toFilename:filename];
+  }
 }
 
 - (void)didReceiveBatteryLevel:(float)level withTimestamp:(double)timestamp fromDevice:(EmpaticaDeviceManager *)device {
 }
+
+
+-(void)saveFloat:(float)f withTimestamp:(double)timestamp toFilename:(NSString*)filename {
+  NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestamp];
+  NSString *dateString = [_dateFormatter stringFromDate:date];
+
+  NSString *directory = [NSHomeDirectory() stringByAppendingPathComponent:@"recordings"];
+  NSString *filePath = [directory stringByAppendingPathComponent:filename];
+
+  NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
+  [fileHandle seekToEndOfFile];
+  [fileHandle writeData:[[NSString stringWithFormat:@"%@; %f; %f\n", dateString, timestamp, f] dataUsingEncoding:NSUTF8StringEncoding]];
+  [fileHandle closeFile];
+}
+
 @end
