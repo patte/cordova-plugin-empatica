@@ -30,6 +30,16 @@ var Empatica = {
         );
     },
 
+    disconnectAllDevices: function(success, failure) {
+        cordova.exec(
+            success,
+            failure,
+            'Empatica',
+            'disconnectAllDevices',
+            [ ]
+        );
+    },
+
     startRecording: function(sessionId, success, failure) {
         cordova.exec(
             success,
