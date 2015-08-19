@@ -329,6 +329,10 @@
     NSString *filePath = [[self recordsDirectory] stringByAppendingPathComponent:filename];
     
     NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
+    if(fileHandle == nil) {
+        [[NSFileManager defaultManager] createFileAtPath:filePath contents:nil attributes:nil];
+        fileHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
+    }
     [fileHandle seekToEndOfFile];
     [fileHandle writeData:[[NSString stringWithFormat:@"%@; %f; %f\n", dateString, timestamp, f] dataUsingEncoding:NSUTF8StringEncoding]];
     [fileHandle closeFile];
