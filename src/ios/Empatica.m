@@ -6,6 +6,23 @@
 @synthesize connectionCallbackId;
 @synthesize recordingCallbackId;
 
+/* The Empatica API wants to be informed when the app enters background
+ unfortunately listening to background notifications and
+ inform the empatica api does not work (empatica API 0.7.2).
+ The Empatica API enforces this to be done in the AppDelegate.
+ So you need to manually add the following lines to the
+ generated project's AppDelegate:
+ 
+ #import <EmpaLink-ios-0.7-full/EmpaticaAPI-0.7.h>
+
+- (void)applicationDidEnterBackground:(UIApplication *)application {
+    [EmpaticaAPI prepareForBackground];
+}
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+    [EmpaticaAPI prepareForResume];
+}
+*/
+
 -(void)pluginInitialize {
     /*[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground)
                                                  name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -25,21 +42,13 @@
     self.isRecording = false;
 }
 
-/* The Empatica API wants to be informed when the app enters background
- unfortunately listening to background notifications and
- inform the empatica api does not work (empatica API 0.7.2).
- The Empatica API enforces this to be done in the AppDelegate.
- So you need to manually add the following lines to the
- generated project's AppDelegate:
- 
- #import <EmpaLink-ios-0.7-full/EmpaticaAPI-0.7.h>
- - (void)applicationDidEnterBackground:(UIApplication *)application {
-    [EmpaticaAPI prepareForBackground];
- }
- - (void)applicationDidBecomeActive:(UIApplication *)application {
-    [EmpaticaAPI prepareForResume];
- }
- */
+
+-(NSString *)recordsDirectory {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *basePath = paths.firstObject;
+    return [basePath stringByAppendingPathComponent:@"/recordings/"];
+}
+
 
 #pragma mark our cordova api
 
@@ -298,8 +307,7 @@
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestamp];
     NSString *dateString = [_dateFormatter stringFromDate:date];
     
-    NSString *directory = [NSHomeDirectory() stringByAppendingPathComponent:@"recordings"];
-    NSString *filePath = [directory stringByAppendingPathComponent:filename];
+    NSString *filePath = [[self recordsDirectory] stringByAppendingPathComponent:filename];
     
     NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
     [fileHandle seekToEndOfFile];
