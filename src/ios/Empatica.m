@@ -46,7 +46,7 @@
 -(NSString *)recordsDirectory {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *basePath = paths.firstObject;
-    return [basePath stringByAppendingPathComponent:@"/recordings/"];
+    return [basePath stringByAppendingPathComponent:@"/records/"];
 }
 
 
