@@ -45,8 +45,11 @@
 
 -(NSString *)recordsDirectory {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *basePath = paths.firstObject;
-    return [basePath stringByAppendingPathComponent:@"/records/"];
+    NSString *recordsPath = [paths.firstObject stringByAppendingPathComponent:@"/records/"];
+    if(![[NSFileManager defaultManager] fileExistsAtPath:recordsPath]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:recordsPath withIntermediateDirectories:NO attributes:nil error:nil];
+    }
+    return recordsPath;
 }
 
 
