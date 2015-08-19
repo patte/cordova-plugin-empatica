@@ -70,8 +70,7 @@
                    }];
 }
 
--(void)discoverDevices:(CDVInvokedUrlCommand *)command {
-    self.discoverCallbackId = command.callbackId;
+-(BOOL)enforceAuthentication:(NSString*)callbackId {
     if(!self.isAuthenticated) {
         NSMutableDictionary* returnInfo = [NSMutableDictionary dictionaryWithCapacity:2];
         [returnInfo setObject:@"API not authenticated!" forKey:@"message"];
@@ -79,9 +78,15 @@
         CDVPluginResult* result = nil;
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnInfo];
         [result setKeepCallbackAsBool:YES];
-        [self.commandDelegate sendPluginResult:result callbackId:self.discoverCallbackId];
-        return;
+        [self.commandDelegate sendPluginResult:result callbackId:callbackId];
+        return false;
     }
+    return true;
+}
+
+-(void)discoverDevices:(CDVInvokedUrlCommand *)command {
+    self.discoverCallbackId = command.callbackId;
+    if(![self enforceAuthentication:self.discoverCallbackId]) { return; }
     if(self.isRecording) {
         NSLog(@"ignoring discoverDevices while isRecording!");
         return;
@@ -91,16 +96,7 @@
 
 -(void)connectDevices:(CDVInvokedUrlCommand *)command {
     self.connectionCallbackId = command.callbackId;
-    if(!self.isAuthenticated) {
-        NSMutableDictionary* returnInfo = [NSMutableDictionary dictionaryWithCapacity:2];
-        [returnInfo setObject:@"API not authenticated!" forKey:@"message"];
-        [returnInfo setObject:@"api_not_authenticated" forKey:@"code"];
-        CDVPluginResult* result = nil;
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnInfo];
-        [result setKeepCallbackAsBool:YES];
-        [self.commandDelegate sendPluginResult:result callbackId:self.connectionCallbackId];
-        return;
-    }
+    if(![self enforceAuthentication:self.connectionCallbackId]) { return; }
     if(self.isRecording) {
         NSLog(@"ignoring discoverDevices while isRecording!");
         return;
@@ -136,17 +132,8 @@
         NSLog(@"ignoring startRecording while isRecording!");
         return;
     }
-    if(!self.isAuthenticated) {
-        NSMutableDictionary* returnInfo = [NSMutableDictionary dictionaryWithCapacity:2];
-        [returnInfo setObject:@"API not authenticated!" forKey:@"message"];
-        [returnInfo setObject:@"api_not_authenticated" forKey:@"code"];
-        CDVPluginResult* result = nil;
-        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:returnInfo];
-        [result setKeepCallbackAsBool:YES];
-        [self.commandDelegate sendPluginResult:result callbackId:self.recordingCallbackId];
-        return;
-    }
     self.recordingCallbackId = command.callbackId;
+    if(![self enforceAuthentication:self.recordingCallbackId]) { return; }
     if(![self allDevicesConnected]) {
         NSLog(@"Can't start recording: not all devices connected!");
         NSMutableDictionary* returnInfo = [NSMutableDictionary dictionaryWithCapacity:2];
