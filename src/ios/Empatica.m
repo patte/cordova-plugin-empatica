@@ -7,10 +7,11 @@
 @synthesize recordingCallbackId;
 
 -(void)pluginInitialize {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground)
+    /*[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground)
                                                  name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive)
                                                  name:UIApplicationDidBecomeActiveNotification object:nil];
+    */
     _dateFormatter = [[NSDateFormatter alloc] init];
     NSLocale *enUSPOSIXLocale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
     [_dateFormatter setLocale:enUSPOSIXLocale];
@@ -24,22 +25,19 @@
     self.isRecording = false;
 }
 
-/* unfortunately listening to background notifications and
+/* The Empatica API wants to be informed when the app enters background
+ unfortunately listening to background notifications and
  inform the empatica api does not work (empatica API 0.7.2).
- Because we are obligated to implement it in the AppDelegate,
- you need to manually add the following lines to the
- generated project's AppDelegate
+ The Empatica API enforces this to be done in the AppDelegate.
+ So you need to manually add the following lines to the
+ generated project's AppDelegate:
+ 
+ #import <EmpaLink-ios-0.7-full/EmpaticaAPI-0.7.h>
  - (void)applicationDidEnterBackground:(UIApplication *)application {
- [EmpaticaAPI prepareForBackground];
+    [EmpaticaAPI prepareForBackground];
  }
  - (void)applicationDidBecomeActive:(UIApplication *)application {
- [EmpaticaAPI prepareForResume];
- }
- -(void)applicationDidEnterBackground {
- [EmpaticaAPI prepareForBackground];
- }
- -(void)applicationDidBecomeActive {
- [EmpaticaAPI prepareForResume];
+    [EmpaticaAPI prepareForResume];
  }
  */
 
