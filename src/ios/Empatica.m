@@ -164,6 +164,13 @@
     self.isRecording = false;
 }
 
+-(void)listRecords:(CDVInvokedUrlCommand *)command {
+    NSArray *directoryContent = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self recordsDirectory] error:NULL];
+    CDVPluginResult* result = nil;
+    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:directoryContent];
+    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+}
+
 #pragma mark empatica signaling delegate methods
 - (void)didUpdateBLEStatus:(BLEStatus)status {
     switch (status) {

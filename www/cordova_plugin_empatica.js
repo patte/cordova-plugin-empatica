@@ -58,6 +58,16 @@ var Empatica = {
             'stopRecording',
             [ ]
         );
+    },
+
+    listRecords: function(success, failure) {
+        cordova.exec(
+            success,
+            failure,
+            'Empatica',
+            'listRecords',
+            [ ]
+        );
     }
 
 };
