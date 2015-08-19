@@ -133,6 +133,10 @@
     for (EmpaticaDeviceManager *device in _connectedDevices) {
         [device disconnect];
     }
+    
+    CDVPluginResult* result = nil;
+    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"done"];
+    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 }
 
 -(void)startRecording:(CDVInvokedUrlCommand *)command {
@@ -157,11 +161,19 @@
     self.sessionId = [command.arguments objectAtIndex:0];
     //TODO beep!
     self.isRecording = true;
+    
+    CDVPluginResult* result = nil;
+    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"done"];
+    [self.commandDelegate sendPluginResult:result callbackId:self.recordingCallbackId];
 }
 
 -(void)stopRecording:(CDVInvokedUrlCommand *)command {
     //TODO beep!
     self.isRecording = false;
+    
+    CDVPluginResult* result = nil;
+    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"done"];
+    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 }
 
 -(void)listRecords:(CDVInvokedUrlCommand *)command {
