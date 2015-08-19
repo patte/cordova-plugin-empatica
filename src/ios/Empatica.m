@@ -105,7 +105,7 @@
     self.connectNumDevices = (int)deviceNames.count;
     for (NSString *deviceName in deviceNames) {
         EmpaticaDeviceManager *device = [_discoveredDevices objectForKey:deviceName];
-        if(device != nil) {
+        if(device != nil && device.deviceStatus!=kDeviceStatusConnected) {
             [device connectWithDeviceDelegate:self];
         }
     }
@@ -121,7 +121,6 @@
         return;
     }
     self.connectNumDevices = 0;
-    //TODO
     for (EmpaticaDeviceManager *device in _connectedDevices) {
         [device disconnect];
     }
@@ -274,6 +273,7 @@
     }
 }
 - (void)didReceiveAccelerationX:(char)x y:(char)y z:(char)z withTimestamp:(double)timestamp fromDevice:(EmpaticaDeviceManager *)device {
+    //TODO
 }
 - (void)didReceiveTemperature:(float)temp withTimestamp:(double)timestamp fromDevice:(EmpaticaDeviceManager *)device {
     if(self.isRecording) {
@@ -290,6 +290,7 @@
 }
 
 - (void)didReceiveBatteryLevel:(float)level withTimestamp:(double)timestamp fromDevice:(EmpaticaDeviceManager *)device {
+    //TODO
 }
 
 
