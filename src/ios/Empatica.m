@@ -181,8 +181,13 @@
 
 -(void)listRecords:(CDVInvokedUrlCommand *)command {
     NSArray *directoryContent = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self recordsDirectory] error:NULL];
+    NSString *recordsDirectory = [self recordsDirectory];
+    NSMutableArray *records = [NSMutableArray array];
+    for (NSString* item in directoryContent){
+        [records addObject:[NSString stringWithFormat:@"%@/%@", recordsDirectory, item]];
+    }
     CDVPluginResult* result = nil;
-    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:directoryContent];
+    result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:records];
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
 }
 
