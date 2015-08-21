@@ -1,11 +1,11 @@
 cordova-plugin-empatica
-=====================
+=======================
 
 WORK IN PROGRESS!
 
 Implementation of the Empatica SDK for Cordova.
 
-### Usage ###
+### Installation ###
 
 From your project's root, add the plugin:
 
@@ -28,30 +28,66 @@ generated project's AppDelegate:
 }
 ```
 
-Set the API key of your empatica connect account: 
+Prior to calling any other functions, you have to authenticate with Empatica.
 
-```javascript
+```coffeescript
 window.plugins.Empatica.authenticateWithAPIKey('<your-empatica-api-key>',
-    function(description) {
-        alert('Empatica API authentication successful: '+description);
-    }
-    function(description) {
-        alert('Empatica API authentication NOT successful: '+description);
-    }
-);
+  (description) ->
+    alert('Empatica API authentication successful: '+description)
+  (error) -> 
+    alert('Empatica API authentication NOT successful: '+description)
+)
 ```
 
-Connect to the first device and register callbacks for connect/disconnect events:
-```javascript
-window.plugins.Empatica.connectFirstDevice(
-    function(info){
-        alert("Empatica device "+info.name+" connected!");
-    },
-    function(info){
-        alert("Empatica device "+info.name+" disconnected!");
-    }
-);
+### Usage ###
+See the complete API in [cordova_plugin_empatica.js](www/cordova_plugin_empatica.js)
+
+First discoverDevices which returns an array of the discovered device names.
+```coffeescript
+discover = ->
+  window.plugins.Empatica.discoverDevices( (devices)->
+    console.log "empatica discovered devices:"
+    console.log devices
+    connect(devices)
+  , (error) ->
+    console.log "empatica discovery error:"
+    console.log error
+  )
+  false
+```
+
+To connect to devices, provide the list with device names (from discoverDevices) to connectDevices.
+```coffeescript
+connect = (devices)->
+  window.plugins.Empatica.connectDevices(devices,
+  (msg)->
+    console.log "empatica connected to all devices!"
+    console.log msg
+  , (error) ->
+    console.log "empatica connect error:"
+    console.log error
+  )
+  false
+
+```
+
+If devices are connected you are free to go to startRecording.
+```coffeescript
+startRecording = ->
+  sessionId = "asdf"
+  window.plugins.Empatica.startRecording(sessionId, 
+  (msg)->
+    console.log "recording: "
+    console.log msg
+  , (error) ->
+    console.log "recording error:"
+    console.log error
+  )
+  false
 ```
 
 ### Thanks ###
 This is a fork of [https://github.com/jbeuckm/cordova-plugin-pebble](cordova-plugin-pebble). Thank you [https://github.com/jbeuckm](joe beuckman)!
+
+### License ###
+MIT
