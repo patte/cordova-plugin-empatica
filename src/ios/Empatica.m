@@ -289,21 +289,21 @@
 #pragma mark empatica data delegate methods
 - (void)didReceiveBVP:(float)bvp withTimestamp:(double)timestamp fromDevice:(EmpaticaDeviceManager *)device {
     if(self.isRecording) {
-        NSLog(@"BVP: %.2f", bvp);
+        //NSLog(@"BVP: %.2f", bvp);
         NSString* filename = [NSString stringWithFormat:@"%@_%@_BVP.csv", self.sessionId, device.name];
         [self saveFloat:bvp withTimestamp:timestamp toFilename:filename];
     }
 }
 - (void)didReceiveGSR:(float)gsr withTimestamp:(double)timestamp fromDevice:(EmpaticaDeviceManager *)device {
     if(self.isRecording) {
-        NSLog(@"GSR: %.2f", gsr);
+        //NSLog(@"GSR: %.2f", gsr);
         NSString* filename = [NSString stringWithFormat:@"%@_%@_GSR.csv", self.sessionId, device.name];
         [self saveFloat:gsr withTimestamp:timestamp toFilename:filename];
     }
 }
 - (void)didReceiveIBI:(float)ibi withTimestamp:(double)timestamp fromDevice:(EmpaticaDeviceManager *)device {
     if(self.isRecording) {
-        NSLog(@"IBI: %.2f", ibi);
+        //NSLog(@"IBI: %.2f", ibi);
         NSString* filename = [NSString stringWithFormat:@"%@_%@_IBI.csv", self.sessionId, device.name];
         [self saveFloat:ibi withTimestamp:timestamp toFilename:filename];
     }
@@ -313,7 +313,7 @@
 }
 - (void)didReceiveTemperature:(float)temp withTimestamp:(double)timestamp fromDevice:(EmpaticaDeviceManager *)device {
     if(self.isRecording) {
-        NSLog(@"Temp: %.2f", temp);
+        //NSLog(@"Temp: %.2f", temp);
         NSString* filename = [NSString stringWithFormat:@"%@_%@_TEMP.csv", self.sessionId, device.name];
         [self saveFloat:temp withTimestamp:timestamp toFilename:filename];
     }
