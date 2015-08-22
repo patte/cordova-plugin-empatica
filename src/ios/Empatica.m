@@ -163,6 +163,7 @@
     
     self.sessionId = [command.arguments objectAtIndex:0];
     //TODO beep!
+    AudioServicesPlaySystemSound(1103);
     self.isRecording = true;
     
     CDVPluginResult* result = nil;
@@ -172,6 +173,7 @@
 
 -(void)stopRecording:(CDVInvokedUrlCommand *)command {
     //TODO beep!
+    AudioServicesPlaySystemSound(1103);
     self.isRecording = false;
     
     CDVPluginResult* result = nil;
