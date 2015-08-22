@@ -86,7 +86,7 @@ startRecording = ->
   false
 ```
 
-During recording or after stopRecording you can call listRecords to get absolute file paths of all the present records on the device. These URLs you could for example pass to [cordova.plugin-file-transfer](https://github.com/apache/cordova-plugin-file-transfer) to get them PUT to your server.
+During recording or after stopRecording you can call listRecords to get absolute file paths of all the present records on the device. These URLs you could for example pass to [cordova-plugin-file-transfer](https://github.com/apache/cordova-plugin-file-transfer) to get them PUT to your server.
 ```coffeescript
 listRecords = ->
   window.plugins.Empatica.listRecords( (records)->
