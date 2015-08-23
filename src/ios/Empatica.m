@@ -30,7 +30,7 @@
                                                  name:UIApplicationDidBecomeActiveNotification object:nil];
     */
     NSString *beepPath = [[NSBundle mainBundle] pathForResource:@"beep" ofType:@"wav"];
-    AudioServicesCreateSystemSoundID((CFURLRef)[NSURL fileURLWithPath:beepPath], &self.beepSoundID);
+    AudioServicesCreateSystemSoundID((CFURLRef)[NSURL fileURLWithPath:beepPath], &_beepSoundID);
 
     _dateFormatter = [[NSDateFormatter alloc] init];
     NSLocale *enUSPOSIXLocale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
