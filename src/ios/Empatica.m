@@ -29,6 +29,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive)
                                                  name:UIApplicationDidBecomeActiveNotification object:nil];
     */
+    NSString *beepPath = [[NSBundle mainBundle] pathForResource:@"beep" ofType:@"wav"];
+    AudioServicesCreateSystemSoundID((CFURLRef)[NSURL fileURLWithPath:beepPath], &self.beepSoundID);
+
     _dateFormatter = [[NSDateFormatter alloc] init];
     NSLocale *enUSPOSIXLocale = [NSLocale localeWithLocaleIdentifier:@"en_US_POSIX"];
     [_dateFormatter setLocale:enUSPOSIXLocale];
@@ -162,8 +165,7 @@
     }
     
     self.sessionId = [command.arguments objectAtIndex:0];
-    //TODO beep!
-    AudioServicesPlaySystemSound(1103);
+    AudioServicesPlaySystemSound(self.beepSoundID);
     self.isRecording = true;
     
     CDVPluginResult* result = nil;
@@ -172,8 +174,7 @@
 }
 
 -(void)stopRecording:(CDVInvokedUrlCommand *)command {
-    //TODO beep!
-    AudioServicesPlaySystemSound(1103);
+    AudioServicesPlaySystemSound(self.beepSoundID);
     self.isRecording = false;
     
     CDVPluginResult* result = nil;

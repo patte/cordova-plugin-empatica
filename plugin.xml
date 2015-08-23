@@ -32,6 +32,8 @@
         <header-file src="src/ios/Empatica.h" />
         <source-file src="src/ios/Empatica.m" />
 
+        <resource-file src="resources/beep.wav" />
+
         <framework src="ExternalAccessory.framework" />
         <framework src="libz.dylib" />
         <framework src="CoreBluetooth.framework" />
@@ -40,6 +42,7 @@
         <framework src="MessageUI.framework" />
         <framework src="Security.framework" />
         <framework src="Accelerate.framework" />
+        <framework src="AudioToolbox.framework" />
 
         <framework src="src/ios/EmpaLink-ios-0.7-full.framework" custom="true"/>
 

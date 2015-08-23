@@ -8,6 +8,7 @@
     NSDateFormatter *_dateFormatter;
 }
 
+@property SystemSoundID beepSoundID;
 @property (nonatomic, strong) NSString* discoverCallbackId;
 @property (nonatomic, strong) NSString* connectionCallbackId;
 @property (nonatomic, strong) NSString* recordingCallbackId;
